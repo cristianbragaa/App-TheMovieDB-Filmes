@@ -1,0 +1,33 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.TheMovieDBListaFilmes" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaria</item>
+        <item name="colorPrimaryVariant">@color/primaria_variacao</item>
+        <item name="colorOnPrimary">@color/branco</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secundaria</item>
+        <item name="colorSecondaryVariant">@color/secundaria_variacao</item>
+        <item name="colorOnSecondary">@color/preto</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:windowBackground">@color/secundaria_variacao</item>
+    </style>
+
+    <style name="MyTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <!--Quando ativado-->
+        <item name="boxStrokeColor">@color/branco</item>
+        <!--Cor do hint ativado-->
+        <item name="hintTextColor">@color/branco</item>
+        <!--Cor padrão do hint-->
+        <item name="android:textColorHint">@color/branco</item>
+        <item name="strokeWidth">0.5dp</item>
+    </style>
+
+    <style name="MyTextInputEditText">
+        <!-- Cor fundo do conteudo -->
+        <item name="backgroundTint">@color/secundaria_variacao</item>
+        <!-- Cor texto digitado -->
+        <item name="android:textColor">@color/branco</item>
+    </style>
+</resources>
