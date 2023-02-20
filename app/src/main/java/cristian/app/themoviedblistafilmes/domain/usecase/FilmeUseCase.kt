@@ -1,7 +1,9 @@
 package cristian.app.themoviedblistafilmes.domain.usecase
 
 import cristian.app.themoviedblistafilmes.data.repository.IFilmeRepository
+import cristian.app.themoviedblistafilmes.domain.model.toFilmeUI
 import cristian.app.themoviedblistafilmes.presentation.model.FilmeUI
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 class FilmeUseCase @Inject constructor(
@@ -10,7 +12,10 @@ class FilmeUseCase @Inject constructor(
 
     override suspend fun recuperarFilmesPopulares(): List<FilmeUI> {
         try {
-            iFilmeRepository.recuperarFilmesPopulares()
+            val listaFilmes = iFilmeRepository.recuperarFilmesPopulares()
+            val listaFilmeUI = listaFilmes.map { it.toFilmeUI() }
+
+            return listaFilmeUI
         } catch (e: Exception) {
             e.printStackTrace()
         }

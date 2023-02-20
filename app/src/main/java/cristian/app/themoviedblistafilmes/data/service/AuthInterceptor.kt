@@ -1,6 +1,6 @@
 package cristian.app.themoviedblistafilmes.data.service
 
-import cristian.app.themoviedblistafilmes.constants.Constants
+import cristian.app.themoviedblistafilmes.helper.Constants
 import okhttp3.Interceptor
 import okhttp3.Response
 

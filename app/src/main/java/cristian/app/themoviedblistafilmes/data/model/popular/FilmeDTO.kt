@@ -1,6 +1,7 @@
 package cristian.app.themoviedblistafilmes.data.model.popular
 
 import com.google.gson.annotations.SerializedName
+import cristian.app.themoviedblistafilmes.domain.model.Filme
 
 data class FilmeDTO(
     @SerializedName("id")
@@ -20,3 +21,16 @@ data class FilmeDTO(
     @SerializedName("genre_ids")
     var generos: List<Int>
 )
+
+fun FilmeDTO.toFilme(): Filme {
+    return Filme(
+        id = this.id,
+        dataLancamento = this.dataLancamento,
+        imagem = this.imagem,
+        titulo = this.titulo,
+        popularidade = this.popularidade,
+        qtdVotos = this.qtdVotos,
+        resumoFilme = this.resumoFilme,
+        generos = this.generos
+    )
+}

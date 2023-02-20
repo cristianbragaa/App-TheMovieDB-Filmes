@@ -1,4 +1,4 @@
-package cristian.app.themoviedblistafilmes.constants
+package cristian.app.themoviedblistafilmes.helper
 
 object Constants {
     const val BASE_URL = "https://api.themoviedb.org/3/"

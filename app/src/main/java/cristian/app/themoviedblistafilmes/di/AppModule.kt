@@ -1,40 +1,36 @@
 package cristian.app.themoviedblistafilmes.di
 
-import cristian.app.themoviedblistafilmes.constants.Constants
-import cristian.app.themoviedblistafilmes.data.repository.FilmeRepository
-import cristian.app.themoviedblistafilmes.data.repository.IFilmeRepository
+import cristian.app.themoviedblistafilmes.helper.Constants
 import cristian.app.themoviedblistafilmes.data.service.FilmeAPI
 import cristian.app.themoviedblistafilmes.data.service.OkhttpClientInterceptor
-import cristian.app.themoviedblistafilmes.domain.usecase.FilmeUseCase
-import cristian.app.themoviedblistafilmes.domain.usecase.IFilmeUseCase
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Singleton
     @Provides
-    fun proverFilmeApi(): FilmeAPI {
+    fun proverRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(OkhttpClientInterceptor.getInstance())
             .build()
-            .create(FilmeAPI::class.java)
     }
+
+    @Singleton
+    @Provides
+    fun proverFilmeApi(retrofit: Retrofit): FilmeAPI {
+        return retrofit.create(FilmeAPI::class.java)
+    }
+
 }
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class InterfaceModule {
-    @Binds
-    abstract fun bindIFilmeRepository(
-        iFilmeRepository: IFilmeRepository
-    ): IFilmeUseCase
-}
+

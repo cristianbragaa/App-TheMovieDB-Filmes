@@ -1,10 +1,8 @@
 package cristian.app.themoviedblistafilmes.presentation.view
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private lateinit var adapterFilmes: FilmesAdapter
 
-    private val viewModel: MainViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,24 +27,15 @@ class MainActivity : AppCompatActivity() {
 
         inicializarAdapter()
         inicializarObservables()
-        //configuraAlternarButtonPesquisa()
-    }
-
-    private fun installSplash() {
-        val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition {
-            Thread.sleep(2000L)
-            false
-        }
     }
 
     private fun inicializarAdapter() {
         with(binding) {
-            adapterFilmes = FilmesAdapter { filme ->
+            adapterFilmes = FilmesAdapter() /*{ filme ->
                 val intent = Intent(applicationContext, FilmeDetalhesActivity::class.java)
                 //intent.putExtra("filme", filme)
                 startActivity(intent)
-            }
+            }*/
             rvFilmes.adapter = adapterFilmes
             rvFilmes.layoutManager = GridLayoutManager(
                 applicationContext, 3, RecyclerView.VERTICAL, false
@@ -55,7 +44,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun inicializarObservables() {
+        mainViewModel.listaFilmesUI.observe(this){ listaFilmesUI ->
+            adapterFilmes.recuperandoFilmesPopulares(listaFilmesUI)
+        }
+    }
 
+    private fun installSplash() {
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition {
+            Thread.sleep(2000L)
+            false
+        }
     }
 
     /*private fun configuraAlternarButtonPesquisa() {

@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import cristian.app.themoviedblistafilmes.helper.Constants
 import cristian.app.themoviedblistafilmes.databinding.ItemSimilarBinding
 import cristian.app.themoviedblistafilmes.data.model.popular.FilmeDTO
-import cristian.app.themoviedblistafilmes.data.service.OkhttpClientInterceptor
 import java.text.SimpleDateFormat
 
 class FilmesSimilaresAdapter : RecyclerView.Adapter<FilmesSimilaresAdapter.FilmesSimilaresViewHolder>() {
@@ -53,7 +53,7 @@ class FilmesSimilaresAdapter : RecyclerView.Adapter<FilmesSimilaresAdapter.Filme
 
             binding.textTituloSimilar.text = filme.titulo
             Picasso.get()
-                .load(OkhttpClientInterceptor.BASE_IMAGE_URL + "w500" + filme.imagem)
+                .load(Constants.BASE_IMAGE_URL + "w500" + filme.imagem)
                 .into(binding.imageCapa)
         }
     }

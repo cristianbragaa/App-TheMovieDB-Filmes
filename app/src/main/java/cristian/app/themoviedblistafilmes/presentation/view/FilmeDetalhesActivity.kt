@@ -17,30 +17,13 @@ import cristian.app.themoviedblistafilmes.data.service.OkhttpClientInterceptor
 class FilmeDetalhesActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityFilmeDetalhesBinding.inflate(layoutInflater) }
-    private val retrofit by lazy { OkhttpClientInterceptor.filmesAPI }
     private lateinit var adapterSimilar: FilmesSimilaresAdapter
-
-    private var filme: FilmeDTO? = null
-    private var id: Int? = null
-    private var detalhes: Detalhes? = null
-    private var generosId: List<Int>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition(SplashScreen.KeepOnScreenCondition {
-            false
-        })
+        installSplash()
         setContentView(binding.root)
         supportActionBar?.title = "Detalhes Filme"
-
-        val bundle = intent.extras
-        if (bundle != null) {
-            filme = bundle.getParcelable("filme")
-            id = filme?.id
-            generosId = filme?.generos
-        }
 
         configuraAdapter()
     }
@@ -55,6 +38,13 @@ class FilmeDetalhesActivity : AppCompatActivity() {
                 RecyclerView.VERTICAL
             )
         )
+    }
+
+    private fun installSplash() {
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition(SplashScreen.KeepOnScreenCondition {
+            false
+        })
     }
 
     /*private fun recuperandoDados() {
