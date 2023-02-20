@@ -4,17 +4,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import cristian.app.themoviedblistafilmes.constants.Constants
 import cristian.app.themoviedblistafilmes.databinding.ItemFilmeBinding
-import cristian.app.themoviedblistafilmes.data.model.popular.FilmeResultado
-import cristian.app.themoviedblistafilmes.data.service.RetrofitInstance
+import cristian.app.themoviedblistafilmes.data.model.popular.FilmeDTO
+import cristian.app.themoviedblistafilmes.data.service.OkhttpClientInterceptor
 
 class FilmesAdapter(
-    private val onClickFilme: (filme: FilmeResultado) -> Unit
+    private val onClickFilme: (filme: FilmeDTO) -> Unit
 ) : RecyclerView.Adapter<FilmesAdapter.FilmesViewHolder>() {
 
-    private var listaFilmes = mutableListOf<FilmeResultado>()
+    private var listaFilmes = mutableListOf<FilmeDTO>()
 
-    fun recuperandoFilmesPopulares(filmes: List<FilmeResultado>){
+    fun recuperandoFilmesPopulares(filmes: List<FilmeDTO>){
         this.listaFilmes = filmes.toMutableList()
         notifyDataSetChanged()
     }
@@ -38,10 +39,10 @@ class FilmesAdapter(
 
     inner class FilmesViewHolder(private val binding: ItemFilmeBinding): RecyclerView.ViewHolder(binding.root){
 
-        fun bind(filme: FilmeResultado, onClickFilme: (filme: FilmeResultado) -> Unit){
+        fun bind(filme: FilmeDTO, onClickFilme: (filme: FilmeDTO) -> Unit){
             binding.textTituloPopular.text = filme.titulo
             Picasso.get()
-                .load(RetrofitInstance.BASE_IMAGE_URL + "w500" + filme.imagem)
+                .load(Constants.BASE_IMAGE_URL + "w500" + filme.imagem)
                 .into(binding.imageFilmePopular)
 
             itemView.setOnClickListener {

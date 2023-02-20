@@ -2,7 +2,7 @@ package cristian.app.themoviedblistafilmes.data.model.popular
 
 import com.google.gson.annotations.SerializedName
 
-data class FilmeResposta(
+data class FilmeResponse(
     @SerializedName("results")
-    var listaFilmes: List<FilmeResultado>
+    var listaFilmes: List<FilmeDTO>
 )

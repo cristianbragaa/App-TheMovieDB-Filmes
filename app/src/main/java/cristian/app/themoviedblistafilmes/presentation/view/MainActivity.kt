@@ -3,39 +3,48 @@ package cristian.app.themoviedblistafilmes.presentation.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cristian.app.themoviedblistafilmes.adapter.FilmesAdapter
 import cristian.app.themoviedblistafilmes.databinding.ActivityMainBinding
+import cristian.app.themoviedblistafilmes.presentation.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    //private val retrofit by lazy { RetrofitInstance.filmesAPI }
     private lateinit var adapterFilmes: FilmesAdapter
-    //private var job: Job? = null
+
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition(SplashScreen.KeepOnScreenCondition {
-            false
-        })
+        installSplash()
         setContentView(binding.root)
         supportActionBar?.hide()
 
-        configuraAdapter()
+        inicializarAdapter()
+        inicializarObservables()
         //configuraAlternarButtonPesquisa()
     }
 
-    private fun configuraAdapter() {
+    private fun installSplash() {
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition {
+            Thread.sleep(2000L)
+            false
+        }
+    }
+
+    private fun inicializarAdapter() {
         with(binding) {
             adapterFilmes = FilmesAdapter { filme ->
                 val intent = Intent(applicationContext, FilmeDetalhesActivity::class.java)
-                intent.putExtra("filme", filme)
+                //intent.putExtra("filme", filme)
                 startActivity(intent)
             }
             rvFilmes.adapter = adapterFilmes
@@ -43,6 +52,10 @@ class MainActivity : AppCompatActivity() {
                 applicationContext, 3, RecyclerView.VERTICAL, false
             )
         }
+    }
+
+    private fun inicializarObservables() {
+
     }
 
     /*private fun configuraAlternarButtonPesquisa() {

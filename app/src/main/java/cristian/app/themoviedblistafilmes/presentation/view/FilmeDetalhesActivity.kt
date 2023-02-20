@@ -10,17 +10,17 @@ import androidx.recyclerview.widget.RecyclerView
 import cristian.app.themoviedblistafilmes.adapter.FilmesSimilaresAdapter
 import cristian.app.themoviedblistafilmes.databinding.ActivityFilmeDetalhesBinding
 import cristian.app.themoviedblistafilmes.data.model.detail.Detalhes
-import cristian.app.themoviedblistafilmes.data.model.popular.FilmeResultado
-import cristian.app.themoviedblistafilmes.data.service.RetrofitInstance
+import cristian.app.themoviedblistafilmes.data.model.popular.FilmeDTO
+import cristian.app.themoviedblistafilmes.data.service.OkhttpClientInterceptor
 
 
 class FilmeDetalhesActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityFilmeDetalhesBinding.inflate(layoutInflater) }
-    private val retrofit by lazy { RetrofitInstance.filmesAPI }
+    private val retrofit by lazy { OkhttpClientInterceptor.filmesAPI }
     private lateinit var adapterSimilar: FilmesSimilaresAdapter
 
-    private var filme: FilmeResultado? = null
+    private var filme: FilmeDTO? = null
     private var id: Int? = null
     private var detalhes: Detalhes? = null
     private var generosId: List<Int>? = null

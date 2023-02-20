@@ -5,15 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import cristian.app.themoviedblistafilmes.databinding.ItemSimilarBinding
-import cristian.app.themoviedblistafilmes.data.model.popular.FilmeResultado
-import cristian.app.themoviedblistafilmes.data.service.RetrofitInstance
+import cristian.app.themoviedblistafilmes.data.model.popular.FilmeDTO
+import cristian.app.themoviedblistafilmes.data.service.OkhttpClientInterceptor
 import java.text.SimpleDateFormat
 
 class FilmesSimilaresAdapter : RecyclerView.Adapter<FilmesSimilaresAdapter.FilmesSimilaresViewHolder>() {
 
-    private var listaFilmesSimilares = mutableListOf<FilmeResultado>()
+    private var listaFilmesSimilares = mutableListOf<FilmeDTO>()
 
-    fun recuperandoFilmesSimilares(filmesSimilares: List<FilmeResultado>){
+    fun recuperandoFilmesSimilares(filmesSimilares: List<FilmeDTO>){
         this.listaFilmesSimilares = filmesSimilares.toMutableList()
         notifyDataSetChanged()
     }
@@ -37,7 +37,7 @@ class FilmesSimilaresAdapter : RecyclerView.Adapter<FilmesSimilaresAdapter.Filme
 
     inner class FilmesSimilaresViewHolder(private val binding: ItemSimilarBinding): RecyclerView.ViewHolder(binding.root){
 
-        fun bind(filme: FilmeResultado){
+        fun bind(filme: FilmeDTO){
             val formatoEntrada = SimpleDateFormat("yyyy-MM-dd")
             val formatoSaida = SimpleDateFormat("dd/MM/yyyy")
 
@@ -53,7 +53,7 @@ class FilmesSimilaresAdapter : RecyclerView.Adapter<FilmesSimilaresAdapter.Filme
 
             binding.textTituloSimilar.text = filme.titulo
             Picasso.get()
-                .load(RetrofitInstance.BASE_IMAGE_URL + "w500" + filme.imagem)
+                .load(OkhttpClientInterceptor.BASE_IMAGE_URL + "w500" + filme.imagem)
                 .into(binding.imageCapa)
         }
     }

@@ -1,11 +1,8 @@
-package cristian.app.themoviedblistafilmes.data.model.popular
+package cristian.app.themoviedblistafilmes.domain.model
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class FilmeResultado(
+data class Filme(
     @SerializedName("id")
     var id: Int,
     @SerializedName("release_date")
@@ -21,5 +18,5 @@ data class FilmeResultado(
     @SerializedName("overview")
     var resumoFilme: String,
     @SerializedName("genre_ids")
-    var generos: List<Int>,
-) : Parcelable
+    var generos: List<Int>
+)
