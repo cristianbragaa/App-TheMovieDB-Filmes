@@ -19,7 +19,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Module
 @InstallIn(ViewModelComponent::class)
 object AppModule {
-
     @Provides
     fun proverFilmeApi(): FilmeAPI {
         return Retrofit.Builder()
@@ -29,16 +28,13 @@ object AppModule {
             .build()
             .create(FilmeAPI::class.java)
     }
-
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class InterfaceModule {
-
     @Binds
     abstract fun bindIFilmeRepository(
         iFilmeRepository: IFilmeRepository
     ): IFilmeUseCase
-
 }
