@@ -1,11 +1,11 @@
-package cristian.app.themoviedblistafilmes.model.popular
+package cristian.app.themoviedblistafilmes.data.model.popular
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Filme(
+data class FilmeResultado(
     @SerializedName("id")
     var id: Int,
     @SerializedName("release_date")

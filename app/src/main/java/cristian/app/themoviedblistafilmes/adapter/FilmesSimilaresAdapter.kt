@@ -4,17 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import cristian.app.themoviedblistafilmes.databinding.ItemFilmeBinding
 import cristian.app.themoviedblistafilmes.databinding.ItemSimilarBinding
-import cristian.app.themoviedblistafilmes.model.popular.Filme
-import cristian.app.themoviedblistafilmes.retrofit.RetrofitInstance
+import cristian.app.themoviedblistafilmes.data.model.popular.FilmeResultado
+import cristian.app.themoviedblistafilmes.data.service.RetrofitInstance
 import java.text.SimpleDateFormat
 
 class FilmesSimilaresAdapter : RecyclerView.Adapter<FilmesSimilaresAdapter.FilmesSimilaresViewHolder>() {
 
-    private var listaFilmesSimilares = mutableListOf<Filme>()
+    private var listaFilmesSimilares = mutableListOf<FilmeResultado>()
 
-    fun recuperandoFilmesSimilares(filmesSimilares: List<Filme>){
+    fun recuperandoFilmesSimilares(filmesSimilares: List<FilmeResultado>){
         this.listaFilmesSimilares = filmesSimilares.toMutableList()
         notifyDataSetChanged()
     }
@@ -38,7 +37,7 @@ class FilmesSimilaresAdapter : RecyclerView.Adapter<FilmesSimilaresAdapter.Filme
 
     inner class FilmesSimilaresViewHolder(private val binding: ItemSimilarBinding): RecyclerView.ViewHolder(binding.root){
 
-        fun bind(filme: Filme){
+        fun bind(filme: FilmeResultado){
             val formatoEntrada = SimpleDateFormat("yyyy-MM-dd")
             val formatoSaida = SimpleDateFormat("dd/MM/yyyy")
 

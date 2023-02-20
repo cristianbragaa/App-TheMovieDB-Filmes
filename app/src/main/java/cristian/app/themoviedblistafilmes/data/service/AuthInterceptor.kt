@@ -1,5 +1,6 @@
-package cristian.app.themoviedblistafilmes.retrofit
+package cristian.app.themoviedblistafilmes.data.service
 
+import cristian.app.themoviedblistafilmes.data.service.RetrofitInstance
 import okhttp3.Interceptor
 import okhttp3.Response
 

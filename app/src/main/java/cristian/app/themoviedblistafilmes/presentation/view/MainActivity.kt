@@ -1,28 +1,21 @@
-package cristian.app.themoviedblistafilmes.activity
+package cristian.app.themoviedblistafilmes.presentation.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cristian.app.themoviedblistafilmes.adapter.FilmesAdapter
 import cristian.app.themoviedblistafilmes.databinding.ActivityMainBinding
-import cristian.app.themoviedblistafilmes.model.popular.Filme
-import cristian.app.themoviedblistafilmes.model.popular.FilmesResult
-import cristian.app.themoviedblistafilmes.retrofit.RetrofitInstance
-import kotlinx.coroutines.*
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val retrofit by lazy { RetrofitInstance.filmesAPI }
-
+    //private val retrofit by lazy { RetrofitInstance.filmesAPI }
     private lateinit var adapterFilmes: FilmesAdapter
-    private var job: Job? = null
+    //private var job: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,21 +28,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         configuraAdapter()
-        configuraAlternarButtonPesquisa()
-    }
-
-    private fun configuraAlternarButtonPesquisa() {
-        binding.btnPesquisa.setOnClickListener {
-            if (binding.textoPesquisa.text.toString() == "") {
-                CoroutineScope(Dispatchers.IO).launch {
-                    recuperaFilmesPopulares()
-                }
-            } else {
-                CoroutineScope(Dispatchers.IO).launch {
-                    recuperaCampoPesquisa()
-                }
-            }
-        }
+        //configuraAlternarButtonPesquisa()
     }
 
     private fun configuraAdapter() {
@@ -63,6 +42,20 @@ class MainActivity : AppCompatActivity() {
             rvFilmes.layoutManager = GridLayoutManager(
                 applicationContext, 3, RecyclerView.VERTICAL, false
             )
+        }
+    }
+
+    /*private fun configuraAlternarButtonPesquisa() {
+        binding.btnPesquisa.setOnClickListener {
+            if (binding.textoPesquisa.text.toString() == "") {
+                CoroutineScope(Dispatchers.IO).launch {
+                    recuperaFilmesPopulares()
+                }
+            } else {
+                CoroutineScope(Dispatchers.IO).launch {
+                    recuperaCampoPesquisa()
+                }
+            }
         }
     }
 
@@ -92,9 +85,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
+    }*/
 
-    private suspend fun recuperaCampoPesquisa() {
+    /*private suspend fun recuperaCampoPesquisa() {
         val textoCampoPesquisa = binding.textoPesquisa.text.toString()
 
         var response: Response<FilmesResult>? = null
@@ -131,5 +124,5 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         job?.cancel()
-    }
+    }*/
 }

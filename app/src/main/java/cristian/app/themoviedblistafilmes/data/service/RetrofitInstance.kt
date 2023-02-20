@@ -1,10 +1,8 @@
-package cristian.app.themoviedblistafilmes.retrofit
+package cristian.app.themoviedblistafilmes.data.service
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
-import java.util.concurrent.TimeUnit
 
 class RetrofitInstance {
 

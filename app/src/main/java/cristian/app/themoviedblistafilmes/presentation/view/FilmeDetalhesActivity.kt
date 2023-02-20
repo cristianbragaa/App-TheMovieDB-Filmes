@@ -1,29 +1,17 @@
-package cristian.app.themoviedblistafilmes.activity
+package cristian.app.themoviedblistafilmes.presentation.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 import cristian.app.themoviedblistafilmes.adapter.FilmesSimilaresAdapter
 import cristian.app.themoviedblistafilmes.databinding.ActivityFilmeDetalhesBinding
-import cristian.app.themoviedblistafilmes.model.details.Detalhes
-import cristian.app.themoviedblistafilmes.model.genres.GeneroLista
-import cristian.app.themoviedblistafilmes.model.popular.Filme
-import cristian.app.themoviedblistafilmes.model.popular.FilmesResult
-import cristian.app.themoviedblistafilmes.retrofit.RetrofitInstance
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Response
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
+import cristian.app.themoviedblistafilmes.data.model.detail.Detalhes
+import cristian.app.themoviedblistafilmes.data.model.popular.FilmeResultado
+import cristian.app.themoviedblistafilmes.data.service.RetrofitInstance
 
 
 class FilmeDetalhesActivity : AppCompatActivity() {
@@ -32,7 +20,7 @@ class FilmeDetalhesActivity : AppCompatActivity() {
     private val retrofit by lazy { RetrofitInstance.filmesAPI }
     private lateinit var adapterSimilar: FilmesSimilaresAdapter
 
-    private var filme: Filme? = null
+    private var filme: FilmeResultado? = null
     private var id: Int? = null
     private var detalhes: Detalhes? = null
     private var generosId: List<Int>? = null
@@ -69,7 +57,7 @@ class FilmeDetalhesActivity : AppCompatActivity() {
         )
     }
 
-    private fun recuperandoDados() {
+    /*private fun recuperandoDados() {
         CoroutineScope(Dispatchers.IO).launch {
             recuperandoDetalhesFilme()
             recuperandoListaGeneros()
@@ -166,5 +154,5 @@ class FilmeDetalhesActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         recuperandoDados()
-    }
+    }*/
 }

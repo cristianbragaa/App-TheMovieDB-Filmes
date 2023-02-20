@@ -1,4 +1,4 @@
-package cristian.app.themoviedblistafilmes.model.genres
+package cristian.app.themoviedblistafilmes.data.model.genre
 
 import com.google.gson.annotations.SerializedName
 
