@@ -13,6 +13,11 @@ interface FilmeAPI {
     @GET("movie/popular")
     suspend fun getPopularMovies(): Response<FilmeResponse>
 
+    @GET("search/movie")
+    suspend fun getSearchMovie(
+        @Query("query") pesquisa: String
+    ): Response<FilmeResponse>
+
     @GET("movie/{movie_id}")
     suspend fun getDetailsMovies(
         @Path("movie_id") movie_id: Int
@@ -24,11 +29,6 @@ interface FilmeAPI {
     @GET("movie/{movie_id}/similar")
     suspend fun getSimilarMovies(
         @Path("movie_id") movie_id: Int
-    ): Response<FilmeResponse>
-
-    @GET("search/movie")
-    suspend fun getSearchMovie(
-        @Query("query") pesquisa: String
     ): Response<FilmeResponse>
 
 }

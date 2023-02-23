@@ -2,6 +2,7 @@ package cristian.app.themoviedblistafilmes.presentation.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,7 +19,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapterFilmes: FilmesAdapter
 
     private val mainViewModel: MainViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplash()
@@ -44,8 +44,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun inicializarObservables() {
-        mainViewModel.listaFilmesUI.observe(this){ listaFilmesUI ->
+        mainViewModel.listaFilmesUI.observe(this) { listaFilmesUI ->
             adapterFilmes.recuperandoFilmesPopulares(listaFilmesUI)
+        }
+        mainViewModel.recuperarFilmesPopulares()
+
+        mainViewModel.progressBarVisibility.observe(this) { resultLoading ->
+            adapterFilmes.setVisibilityProgressBar(resultLoading)
         }
     }
 
@@ -66,34 +71,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 CoroutineScope(Dispatchers.IO).launch {
                     recuperaCampoPesquisa()
-                }
-            }
-        }
-    }
-
-    private fun recuperandoDadosFilmes() {
-        job = CoroutineScope(Dispatchers.IO).launch {
-            recuperaFilmesPopulares()
-        }
-    }
-
-    private suspend fun recuperaFilmesPopulares() {
-        var response: Response<FilmesResult>? = null
-        try {
-            response = retrofit.getPopularMovies()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        if (response != null) {
-            if (response.isSuccessful) {
-
-                val listaFilmes = response.body()?.listaFilmes
-                if (listaFilmes != null) {
-                    withContext(Dispatchers.Main) {
-                        adapterFilmes.recuperandoFilmesPopulares(listaFilmes)
-
-                    }
                 }
             }
         }
@@ -126,15 +103,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        recuperandoDadosFilmes()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        job?.cancel()
     }*/
+
+
 }

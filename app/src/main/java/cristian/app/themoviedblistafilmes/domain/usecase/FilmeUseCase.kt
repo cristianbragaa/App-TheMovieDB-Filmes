@@ -13,8 +13,8 @@ class FilmeUseCase @Inject constructor(
     override suspend fun recuperarFilmesPopulares(): List<FilmeUI> {
         try {
             val listaFilmes = iFilmeRepository.recuperarFilmesPopulares()
-            val listaFilmeUI = listaFilmes.map { it.toFilmeUI() }
 
+            val listaFilmeUI = listaFilmes.map { it.toFilmeUI() }
             return listaFilmeUI
         } catch (e: Exception) {
             e.printStackTrace()
