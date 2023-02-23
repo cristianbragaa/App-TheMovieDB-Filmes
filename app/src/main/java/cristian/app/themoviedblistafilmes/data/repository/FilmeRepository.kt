@@ -22,4 +22,19 @@ class FilmeRepository @Inject constructor(
         }
         return emptyList()
     }
+
+    override suspend fun recuperarFilmesPesquisa(pesquisaDigitada: String): List<Filme> {
+        val response = service.getSearchMovie(
+            pesquisaDigitada
+        )
+
+        if (response.isSuccessful) {
+            response.body()?.let { filmeResponse ->
+                val listaFilmeDTO = filmeResponse.listaFilmes
+                val listaFilmes = listaFilmeDTO.map { it.toFilme() }
+                return listaFilmes
+            }
+        }
+        return emptyList()
+    }
 }

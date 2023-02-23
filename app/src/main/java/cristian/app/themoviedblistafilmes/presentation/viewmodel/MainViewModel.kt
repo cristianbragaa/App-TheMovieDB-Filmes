@@ -26,16 +26,29 @@ class MainViewModel @Inject constructor(
 
 
     private val livedata = MutableLiveData<List<FilmeUI>>()
-    val listaFilmesUI: MutableLiveData<List<FilmeUI>>
+    val listaFilmesPopulares: MutableLiveData<List<FilmeUI>>
         get() = livedata
+
+    private val livedataCampoPesquisa = MutableLiveData<List<FilmeUI>>()
+    val listaFilmesPesquisa: MutableLiveData<List<FilmeUI>>
+        get() = livedataCampoPesquisa
 
     fun recuperarFilmesPopulares() {
         liveDataProgress.value = ResultLoading(visibility = View.VISIBLE)
-
-        viewModelScope.launch(Dispatchers.IO) {
-            livedata.postValue(iFilmeUseCase.recuperarFilmesPopulares())
+        viewModelScope.launch {
+            livedata.postValue(
+                iFilmeUseCase.recuperarFilmesPopulares()
+            )
         }
         liveDataProgress.value = ResultLoading(visibility = View.GONE)
+    }
+
+    fun recuperarFilmesPesquisa(pesquisaDigitada: String) {
+        viewModelScope.launch {
+            livedataCampoPesquisa.postValue(
+                iFilmeUseCase.recuperarFilmesPesquisa(pesquisaDigitada)
+            )
+        }
     }
 
 }

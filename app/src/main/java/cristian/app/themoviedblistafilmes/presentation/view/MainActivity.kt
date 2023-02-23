@@ -1,8 +1,11 @@
 package cristian.app.themoviedblistafilmes.presentation.view
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.GridLayoutManager
@@ -26,6 +29,10 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         inicializarAdapter()
+    }
+
+    override fun onStart() {
+        super.onStart()
         inicializarObservables()
     }
 
@@ -44,13 +51,41 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun inicializarObservables() {
-        mainViewModel.listaFilmesUI.observe(this) { listaFilmesUI ->
-            adapterFilmes.recuperandoFilmesPopulares(listaFilmesUI)
+        // Filmes Populares
+        mainViewModel.listaFilmesPopulares.observe(this) { listaFilmesPopulares ->
+            adapterFilmes.recuperandoFilmes(listaFilmesPopulares)
         }
         mainViewModel.recuperarFilmesPopulares()
 
+        // Configura ProgressBar
         mainViewModel.progressBarVisibility.observe(this) { resultLoading ->
             adapterFilmes.setVisibilityProgressBar(resultLoading)
+        }
+
+        // Filmes Campo Pesquisar
+        mainViewModel.listaFilmesPesquisa.observe(this) { listaFilmesPesquisa ->
+            adapterFilmes.recuperandoFilmes(listaFilmesPesquisa)
+        }
+        inicializarListener()
+    }
+
+    private fun inicializarListener() {
+        binding.btnPesquisa.setOnClickListener {
+            val campoPesquisa = binding.textoPesquisa.text.toString()
+
+            if (campoPesquisa.isNotEmpty()) {
+                mainViewModel.recuperarFilmesPesquisa(campoPesquisa)
+
+                //Esconder teclado após pesquisa
+                val inputMethodMenager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodMenager.hideSoftInputFromWindow(it.windowToken, 0)
+            } else {
+                Toast.makeText(
+                    this,
+                    "É Necessário preencher um valor para o campo pesquisa",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 
@@ -61,49 +96,4 @@ class MainActivity : AppCompatActivity() {
             false
         }
     }
-
-    /*private fun configuraAlternarButtonPesquisa() {
-        binding.btnPesquisa.setOnClickListener {
-            if (binding.textoPesquisa.text.toString() == "") {
-                CoroutineScope(Dispatchers.IO).launch {
-                    recuperaFilmesPopulares()
-                }
-            } else {
-                CoroutineScope(Dispatchers.IO).launch {
-                    recuperaCampoPesquisa()
-                }
-            }
-        }
-    }*/
-
-    /*private suspend fun recuperaCampoPesquisa() {
-        val textoCampoPesquisa = binding.textoPesquisa.text.toString()
-
-        var response: Response<FilmesResult>? = null
-        try {
-            response = retrofit.getSearchMovie(textoCampoPesquisa)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        if (response != null) {
-            if (response.isSuccessful) {
-                val listaFilmes = response.body()?.listaFilmes
-
-                val listaFilmesRecuperados = mutableListOf<Filme>()
-
-                listaFilmes?.forEach { filme ->
-                    if (filme.imagem != null) {
-                        listaFilmesRecuperados.add(filme)
-                    }
-
-                    withContext(Dispatchers.Main) {
-                        adapterFilmes.recuperandoFilmesPopulares(listaFilmesRecuperados)
-                    }
-                }
-            }
-        }
-    }*/
-
-
 }
