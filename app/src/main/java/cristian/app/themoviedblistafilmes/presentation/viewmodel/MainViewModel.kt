@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import cristian.app.themoviedblistafilmes.domain.usecase.FilmeUseCase
 import cristian.app.themoviedblistafilmes.domain.usecase.IFilmeUseCase
 import cristian.app.themoviedblistafilmes.helper.ResultLoading
+import cristian.app.themoviedblistafilmes.presentation.model.DetalhesUI
 import cristian.app.themoviedblistafilmes.presentation.model.FilmeUI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,33 +21,45 @@ class MainViewModel @Inject constructor(
     private val iFilmeUseCase: IFilmeUseCase
 ) : ViewModel() {
 
-    private val liveDataProgress = MutableLiveData<ResultLoading>()
+    private val progressBar = MutableLiveData<ResultLoading>()
     val progressBarVisibility: MutableLiveData<ResultLoading>
-        get() = liveDataProgress
+        get() = progressBar
 
-
-    private val livedata = MutableLiveData<List<FilmeUI>>()
+    private val listaFilmeUI = MutableLiveData<List<FilmeUI>>()
     val listaFilmesPopulares: MutableLiveData<List<FilmeUI>>
-        get() = livedata
+        get() = listaFilmeUI
 
-    private val livedataCampoPesquisa = MutableLiveData<List<FilmeUI>>()
+    private val listaFilmeUICampoPesquisa = MutableLiveData<List<FilmeUI>>()
     val listaFilmesPesquisa: MutableLiveData<List<FilmeUI>>
-        get() = livedataCampoPesquisa
+        get() = listaFilmeUICampoPesquisa
+
+    private val detalhesUI = MutableLiveData<DetalhesUI>()
+    val detalhesUIFilme: MutableLiveData<DetalhesUI>
+        get() = detalhesUI
 
     fun recuperarFilmesPopulares() {
-        liveDataProgress.value = ResultLoading(visibility = View.VISIBLE)
+        progressBar.value = ResultLoading(visibility = View.VISIBLE)
+
         viewModelScope.launch {
-            livedata.postValue(
+            listaFilmeUI.postValue(
                 iFilmeUseCase.recuperarFilmesPopulares()
             )
         }
-        liveDataProgress.value = ResultLoading(visibility = View.GONE)
+        progressBar.value = ResultLoading(visibility = View.GONE)
     }
 
     fun recuperarFilmesPesquisa(pesquisaDigitada: String) {
         viewModelScope.launch {
-            livedataCampoPesquisa.postValue(
+            listaFilmeUICampoPesquisa.postValue(
                 iFilmeUseCase.recuperarFilmesPesquisa(pesquisaDigitada)
+            )
+        }
+    }
+
+    fun recuperarFilmeDetalhes(movie_id: Int) {
+        viewModelScope.launch {
+            detalhesUI.postValue(
+                iFilmeUseCase.recuperarFilmeDetalhes(movie_id)
             )
         }
     }

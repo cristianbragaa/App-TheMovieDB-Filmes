@@ -1,6 +1,6 @@
 package cristian.app.themoviedblistafilmes.data.service
 
-import cristian.app.themoviedblistafilmes.data.model.detail.Detalhes
+import cristian.app.themoviedblistafilmes.data.model.detail.DetalhesDTO
 import cristian.app.themoviedblistafilmes.data.model.genre.GeneroLista
 import cristian.app.themoviedblistafilmes.data.model.popular.FilmeResponse
 import retrofit2.Response
@@ -21,7 +21,7 @@ interface FilmeAPI {
     @GET("movie/{movie_id}")
     suspend fun getDetailsMovies(
         @Path("movie_id") movie_id: Int
-    ): Response<Detalhes>
+    ): Response<DetalhesDTO>
 
     @GET("genre/movie/list")
     suspend fun getListGenres(): Response<GeneroLista>

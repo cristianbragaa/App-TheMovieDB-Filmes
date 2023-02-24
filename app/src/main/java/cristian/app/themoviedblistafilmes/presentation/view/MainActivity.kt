@@ -1,9 +1,10 @@
 package cristian.app.themoviedblistafilmes.presentation.view
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -38,11 +39,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun inicializarAdapter() {
         with(binding) {
-            adapterFilmes = FilmesAdapter() /*{ filme ->
+            adapterFilmes = FilmesAdapter { filmeUI ->
                 val intent = Intent(applicationContext, FilmeDetalhesActivity::class.java)
-                //intent.putExtra("filme", filme)
+                intent.putExtra("id", filmeUI.id)
                 startActivity(intent)
-            }*/
+            }
             rvFilmes.adapter = adapterFilmes
             rvFilmes.layoutManager = GridLayoutManager(
                 applicationContext, 3, RecyclerView.VERTICAL, false
@@ -71,18 +72,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun inicializarListener() {
         binding.btnPesquisa.setOnClickListener {
-            val campoPesquisa = binding.textoPesquisa.text.toString()
+            val pesquisaDigitada = binding.textoPesquisa.text.toString()
 
-            if (campoPesquisa.isNotEmpty()) {
-                mainViewModel.recuperarFilmesPesquisa(campoPesquisa)
-
+            if (pesquisaDigitada.isNotEmpty()) {
+                mainViewModel.recuperarFilmesPesquisa(pesquisaDigitada)
                 //Esconder teclado após pesquisa
                 val inputMethodMenager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodMenager.hideSoftInputFromWindow(it.windowToken, 0)
             } else {
                 Toast.makeText(
                     this,
-                    "É Necessário preencher um valor para o campo pesquisa",
+                    "É necessário preencher um valor para o campo pesquisa",
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -93,7 +93,8 @@ class MainActivity : AppCompatActivity() {
         val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition {
             Thread.sleep(2000L)
-            false
+            return@setKeepOnScreenCondition false
         }
     }
+
 }

@@ -1,8 +1,14 @@
-package cristian.app.themoviedblistafilmes.data.model.detail
+package cristian.app.themoviedblistafilmes.presentation.model
 
+import android.os.Bundle
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import cristian.app.themoviedblistafilmes.data.model.detail.DetalhesGenero
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
-data class Detalhes(
+@Parcelize
+data class DetalhesUI(
     @SerializedName("poster_path")
     var imagem: String?,
     @SerializedName("genres")
@@ -17,4 +23,5 @@ data class Detalhes(
     var titulo: String,
     @SerializedName("vote_count")
     var qtdVotos: Int
-)
+) : Parcelable
+

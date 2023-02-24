@@ -1,7 +1,10 @@
 package cristian.app.themoviedblistafilmes.presentation.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class FilmeUI(
     @SerializedName("id")
     var id: Int,
@@ -19,4 +22,4 @@ data class FilmeUI(
     var resumoFilme: String,
     @SerializedName("genre_ids")
     var generos: List<Int>
-)
+) : Parcelable
