@@ -18,7 +18,8 @@ class FilmeRepository @Inject constructor(
         if (response.isSuccessful) {
             response.body()?.let { filmeResponse ->
                 val listaFilmeDTO = filmeResponse.listaFilmes
-                return listaFilmeDTO.map { it.toFilme() }
+                val listaFilme = listaFilmeDTO.map { it.toFilme() }
+                return listaFilme
             }
         }
         return emptyList()
@@ -31,8 +32,8 @@ class FilmeRepository @Inject constructor(
         if (response.isSuccessful) {
             response.body()?.let { filmeResponse ->
                 val listaFilmeDTO = filmeResponse.listaFilmes
-                return listaFilmeDTO.map { it.toFilme() }
-
+                val listaFilme = listaFilmeDTO.map { it.toFilme() }
+                return listaFilme
             }
         }
         return emptyList()
@@ -44,9 +45,27 @@ class FilmeRepository @Inject constructor(
 
         if (response.isSuccessful) {
             response.body()?.let { detalhesDTO ->
-                return detalhesDTO.toDetalhes()
+                val detalhes = detalhesDTO.toDetalhes()
+                return detalhes
             }
         }
         throw Exception("Erro ao recuperar detalhes do filme")
     }
+
+    override suspend fun recuperandoListaFilmesSimilares(movie_id: Int): List<Filme> {
+        val response = service.getSimilarMovies(movie_id)
+
+        if (response.isSuccessful) {
+            response.body()?.let { filmeResponse ->
+                val listaFilmeDTO = filmeResponse.listaFilmes
+                val listaFilme = listaFilmeDTO.map {
+                    it.toFilme()
+                }
+                return listaFilme
+            }
+        }
+        return emptyList()
+    }
+
+
 }

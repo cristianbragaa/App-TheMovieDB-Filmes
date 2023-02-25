@@ -7,13 +7,14 @@ import com.squareup.picasso.Picasso
 import cristian.app.themoviedblistafilmes.helper.Constants
 import cristian.app.themoviedblistafilmes.databinding.ItemSimilarBinding
 import cristian.app.themoviedblistafilmes.data.model.popular.FilmeDTO
+import cristian.app.themoviedblistafilmes.presentation.model.FilmeUI
 import java.text.SimpleDateFormat
 
 class FilmesSimilaresAdapter : RecyclerView.Adapter<FilmesSimilaresAdapter.FilmesSimilaresViewHolder>() {
 
-    private var listaFilmesSimilares = mutableListOf<FilmeDTO>()
+    private var listaFilmesSimilares = mutableListOf<FilmeUI>()
 
-    fun recuperandoFilmesSimilares(filmesSimilares: List<FilmeDTO>){
+    fun recuperandoFilmesSimilares(filmesSimilares: List<FilmeUI>){
         this.listaFilmesSimilares = filmesSimilares.toMutableList()
         notifyDataSetChanged()
     }
@@ -37,7 +38,7 @@ class FilmesSimilaresAdapter : RecyclerView.Adapter<FilmesSimilaresAdapter.Filme
 
     inner class FilmesSimilaresViewHolder(private val binding: ItemSimilarBinding): RecyclerView.ViewHolder(binding.root){
 
-        fun bind(filme: FilmeDTO){
+        fun bind(filme: FilmeUI){
             val formatoEntrada = SimpleDateFormat("yyyy-MM-dd")
             val formatoSaida = SimpleDateFormat("dd/MM/yyyy")
 

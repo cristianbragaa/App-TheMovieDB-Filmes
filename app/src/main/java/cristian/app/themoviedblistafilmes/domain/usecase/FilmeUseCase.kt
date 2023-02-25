@@ -17,7 +17,8 @@ class FilmeUseCase @Inject constructor(
         try {
             val listaFilmes = iFilmeRepository.recuperarFilmesPopulares()
 
-            return listaFilmes.map { it.toFilmeUI() }
+            val listaFilmeUI = listaFilmes.map { it.toFilmeUI() }
+            return listaFilmeUI
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -28,15 +29,14 @@ class FilmeUseCase @Inject constructor(
         try {
             val listaFilmes = iFilmeRepository.recuperarFilmesPesquisa(pesquisaDigitada)
 
-            // TODO TENTAR LEVAR ESSA VERIFICAÇÃO PARA CLASSE FILME E RETORNAR AQUI A LISTA
             val listaImagensNaoNulas = mutableListOf<Filme>()
             listaFilmes.forEach {
                 if (it.imagem != null) {
                     listaImagensNaoNulas.add(it)
                 }
             }
-
-            return listaImagensNaoNulas.map { it.toFilmeUI() }
+            val listaFilmeUI = listaImagensNaoNulas.map { it.toFilmeUI() }
+            return listaFilmeUI
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -48,10 +48,27 @@ class FilmeUseCase @Inject constructor(
         try {
             val detalhes = iFilmeRepository.recuperarFilmeDetalhes(movie_id)
 
-            return detalhes.toDetalhesUI()
+            val detalhesUI = detalhes.toDetalhesUI()
+            return detalhesUI
         } catch (e: Exception) {
             e.printStackTrace()
         }
         throw Exception("Erro ao recuperar detalhes do filme")
+    }
+
+    override suspend fun recuperandoListaFilmesSimilares(movie_id: Int): List<FilmeUI> {
+        try {
+            val listaFilmes = iFilmeRepository.recuperandoListaFilmesSimilares(movie_id)
+
+            val listaFilmeUI = listaFilmes.map { it.toFilmeUI() }
+            return if (listaFilmeUI.isNotEmpty()){
+                listaFilmeUI
+            } else {
+                emptyList()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return emptyList()
     }
 }

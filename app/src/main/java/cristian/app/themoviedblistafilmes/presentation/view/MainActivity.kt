@@ -30,10 +30,6 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         inicializarAdapter()
-    }
-
-    override fun onStart() {
-        super.onStart()
         inicializarObservables()
     }
 
@@ -53,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun inicializarObservables() {
         // Filmes Populares
-        mainViewModel.listaFilmesPopulares.observe(this) { listaFilmesPopulares ->
+        mainViewModel.listaFilmes.observe(this) { listaFilmesPopulares ->
             adapterFilmes.recuperandoFilmes(listaFilmesPopulares)
         }
         mainViewModel.recuperarFilmesPopulares()
@@ -64,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Filmes Campo Pesquisar
-        mainViewModel.listaFilmesPesquisa.observe(this) { listaFilmesPesquisa ->
+        mainViewModel.listaFilmes.observe(this) { listaFilmesPesquisa ->
             adapterFilmes.recuperandoFilmes(listaFilmesPesquisa)
         }
         inicializarListener()

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Genero(
     @SerializedName("id")
-    val idListaGeneros: Int,
+    val idListaGenero: Int,
     @SerializedName("name")
-    val nameListaGeneros: String
+    val nameListaGenero: String
 )

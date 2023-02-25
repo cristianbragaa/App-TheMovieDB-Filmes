@@ -26,16 +26,16 @@ class MainViewModel @Inject constructor(
         get() = progressBar
 
     private val listaFilmeUI = MutableLiveData<List<FilmeUI>>()
-    val listaFilmesPopulares: MutableLiveData<List<FilmeUI>>
+    val listaFilmes: MutableLiveData<List<FilmeUI>>
         get() = listaFilmeUI
-
-    private val listaFilmeUICampoPesquisa = MutableLiveData<List<FilmeUI>>()
-    val listaFilmesPesquisa: MutableLiveData<List<FilmeUI>>
-        get() = listaFilmeUICampoPesquisa
 
     private val detalhesUI = MutableLiveData<DetalhesUI>()
     val detalhesUIFilme: MutableLiveData<DetalhesUI>
         get() = detalhesUI
+
+    private val filmesSimilares = MutableLiveData<List<FilmeUI>>()
+    val listaFilmesSimilares: MutableLiveData<List<FilmeUI>>
+        get() = filmesSimilares
 
     fun recuperarFilmesPopulares() {
         progressBar.value = ResultLoading(visibility = View.VISIBLE)
@@ -44,13 +44,14 @@ class MainViewModel @Inject constructor(
             listaFilmeUI.postValue(
                 iFilmeUseCase.recuperarFilmesPopulares()
             )
+            progressBar.value = ResultLoading(visibility = View.GONE)
         }
-        progressBar.value = ResultLoading(visibility = View.GONE)
+
     }
 
     fun recuperarFilmesPesquisa(pesquisaDigitada: String) {
         viewModelScope.launch {
-            listaFilmeUICampoPesquisa.postValue(
+            listaFilmeUI.postValue(
                 iFilmeUseCase.recuperarFilmesPesquisa(pesquisaDigitada)
             )
         }
@@ -60,6 +61,14 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             detalhesUI.postValue(
                 iFilmeUseCase.recuperarFilmeDetalhes(movie_id)
+            )
+        }
+    }
+
+    fun recuperandoListaFilmesSimilares(movie_id: Int) {
+        viewModelScope.launch {
+            filmesSimilares.postValue(
+                iFilmeUseCase.recuperandoListaFilmesSimilares(movie_id)
             )
         }
     }

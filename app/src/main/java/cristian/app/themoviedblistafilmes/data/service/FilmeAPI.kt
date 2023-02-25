@@ -23,9 +23,6 @@ interface FilmeAPI {
         @Path("movie_id") movie_id: Int
     ): Response<DetalhesDTO>
 
-    @GET("genre/movie/list")
-    suspend fun getListGenres(): Response<GeneroLista>
-
     @GET("movie/{movie_id}/similar")
     suspend fun getSimilarMovies(
         @Path("movie_id") movie_id: Int
