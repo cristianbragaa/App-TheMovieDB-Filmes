@@ -1,8 +1,8 @@
 package cristian.app.themoviedblistafilmes.data.service
 
 import cristian.app.themoviedblistafilmes.data.model.detail.DetalhesDTO
-import cristian.app.themoviedblistafilmes.data.model.genre.GeneroLista
 import cristian.app.themoviedblistafilmes.data.model.popular.FilmeResponse
+import cristian.app.themoviedblistafilmes.data.model.similar.SimilarResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -26,6 +26,6 @@ interface FilmeAPI {
     @GET("movie/{movie_id}/similar")
     suspend fun getSimilarMovies(
         @Path("movie_id") movie_id: Int
-    ): Response<FilmeResponse>
+    ): Response<SimilarResponse>
 
 }

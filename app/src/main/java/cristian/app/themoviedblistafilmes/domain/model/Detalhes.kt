@@ -7,19 +7,19 @@ import cristian.app.themoviedblistafilmes.presentation.model.DetalhesUI
 
 data class Detalhes (
     @SerializedName("poster_path")
-    var imagem: String?,
+    val imagem: String,
     @SerializedName("genres")
-    var generos: List<DetalhesGenero>,
+    val generos: List<DetalhesGenero>,
     @SerializedName("overview")
-    var resumo: String,
+    val resumo: String,
     @SerializedName("popularity")
-    var popularidade: Double,
+    val popularidade: Double,
     @SerializedName("release_date")
-    var dataLancamento: String?,
+    val dataLancamento: String,
     @SerializedName("title")
-    var titulo: String,
+    val titulo: String,
     @SerializedName("vote_count")
-    var qtdVotos: Int
+    val qtdVotos: Int
 )
 
 fun Detalhes.toDetalhesUI() : DetalhesUI {

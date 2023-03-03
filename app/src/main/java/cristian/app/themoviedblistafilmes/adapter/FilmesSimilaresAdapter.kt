@@ -3,20 +3,30 @@ package cristian.app.themoviedblistafilmes.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import cristian.app.themoviedblistafilmes.R
 import cristian.app.themoviedblistafilmes.helper.Constants
 import cristian.app.themoviedblistafilmes.databinding.ItemSimilarBinding
-import cristian.app.themoviedblistafilmes.data.model.popular.FilmeDTO
+import cristian.app.themoviedblistafilmes.helper.ResultLoading
 import cristian.app.themoviedblistafilmes.presentation.model.FilmeUI
+import cristian.app.themoviedblistafilmes.presentation.model.SimilarUI
+import java.lang.Exception
 import java.text.SimpleDateFormat
 
-class FilmesSimilaresAdapter : RecyclerView.Adapter<FilmesSimilaresAdapter.FilmesSimilaresViewHolder>() {
+class FilmesSimilaresAdapter :
+    RecyclerView.Adapter<FilmesSimilaresAdapter.FilmesSimilaresViewHolder>() {
 
-    private var listaFilmesSimilares = mutableListOf<FilmeUI>()
+    private var listaFilmesSimilares = emptyList<SimilarUI>()
+    private lateinit var resultLoading: ResultLoading
 
-    fun recuperandoFilmesSimilares(filmesSimilares: List<FilmeUI>){
-        this.listaFilmesSimilares = filmesSimilares.toMutableList()
+    fun recuperandoFilmesSimilares(filmesSimilares: List<SimilarUI>) {
+        this.listaFilmesSimilares = filmesSimilares
         notifyDataSetChanged()
+    }
+
+    fun setVisibilityProgressBar(resultLoading: ResultLoading) {
+        this.resultLoading = resultLoading
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmesSimilaresViewHolder {
@@ -29,33 +39,41 @@ class FilmesSimilaresAdapter : RecyclerView.Adapter<FilmesSimilaresAdapter.Filme
     }
 
     override fun onBindViewHolder(holder: FilmesSimilaresViewHolder, position: Int) {
-        holder.bind(listaFilmesSimilares[position])
+        val similarUI = listaFilmesSimilares[position]
+        holder.bind(similarUI)
     }
 
-    override fun getItemCount(): Int {
-        return listaFilmesSimilares.size
-    }
+    override fun getItemCount() = listaFilmesSimilares.count()
 
-    inner class FilmesSimilaresViewHolder(private val binding: ItemSimilarBinding): RecyclerView.ViewHolder(binding.root){
+    inner class FilmesSimilaresViewHolder(private val binding: ItemSimilarBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(filme: FilmeUI){
+        private val progressBar = binding.progressItemSimilar
+        private val textDataSimilar = binding.textDataSimilar
+        private val textTituloSimilar = binding.textTituloSimilar
+        private val imagem = binding.imageCapa
+
+        fun bind(similarUI: SimilarUI) {
+            progressBar.visibility = resultLoading.visibility
+
             val formatoEntrada = SimpleDateFormat("yyyy-MM-dd")
             val formatoSaida = SimpleDateFormat("dd/MM/yyyy")
 
-            val dataLancamento = filme.dataLancamento
+            val dataLancamento = similarUI.dataLancamento
 
-            if (dataLancamento != null && dataLancamento != "") {
+            if (dataLancamento != "") {
                 val dataEntrada = formatoEntrada.parse(dataLancamento)
                 val dataSaida = formatoSaida.format(dataEntrada)
-                binding.textDataSimilar.text = "Release date: $dataSaida"
+                textDataSimilar.text = "Release date: $dataSaida"
             } else {
-                binding.textDataSimilar.text = "Release date: - -"
+                textDataSimilar.text = "Release date: - -"
             }
 
-            binding.textTituloSimilar.text = filme.titulo
+            textTituloSimilar.text = similarUI.titulo
             Picasso.get()
-                .load(Constants.BASE_IMAGE_URL + "w500" + filme.imagem)
-                .into(binding.imageCapa)
+                .load(Constants.BASE_IMAGE_URL + "w500" + similarUI.imagem)
+                .error(R.drawable.imagedefault)
+                .into(imagem)
         }
     }
 }

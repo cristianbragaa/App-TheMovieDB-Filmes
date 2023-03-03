@@ -5,21 +5,21 @@ import cristian.app.themoviedblistafilmes.presentation.model.FilmeUI
 
 data class Filme(
     @SerializedName("id")
-    var id: Int,
+    val id: Int,
     @SerializedName("release_date")
-    var dataLancamento: String?,
+    val dataLancamento: String,
     @SerializedName("poster_path")
-    var imagem: String?,
+    val imagem: String?,
     @SerializedName("title")
-    var titulo: String,
+    val titulo: String,
     @SerializedName("popularity")
-    var popularidade: Double,
+    val popularidade: Double,
     @SerializedName("vote_count")
-    var qtdVotos: Double,
+    val qtdVotos: Double,
     @SerializedName("overview")
-    var resumoFilme: String,
+    val resumoFilme: String,
     @SerializedName("genre_ids")
-    var generos: List<Int>
+    val generos: List<Int>
 )
 
 fun Filme.toFilmeUI(): FilmeUI {

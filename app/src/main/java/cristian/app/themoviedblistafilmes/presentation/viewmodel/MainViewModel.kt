@@ -1,18 +1,16 @@
 package cristian.app.themoviedblistafilmes.presentation.viewmodel
 
 import android.view.View
-import android.widget.ProgressBar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cristian.app.themoviedblistafilmes.domain.usecase.FilmeUseCase
 import cristian.app.themoviedblistafilmes.domain.usecase.IFilmeUseCase
 import cristian.app.themoviedblistafilmes.helper.ResultLoading
 import cristian.app.themoviedblistafilmes.presentation.model.DetalhesUI
 import cristian.app.themoviedblistafilmes.presentation.model.FilmeUI
+import cristian.app.themoviedblistafilmes.presentation.model.SimilarUI
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,55 +19,58 @@ class MainViewModel @Inject constructor(
     private val iFilmeUseCase: IFilmeUseCase
 ) : ViewModel() {
 
-    private val progressBar = MutableLiveData<ResultLoading>()
-    val progressBarVisibility: MutableLiveData<ResultLoading>
-        get() = progressBar
+    private val _progressBarVisibility = MutableLiveData<ResultLoading>()
+    val progressBarVisibility: LiveData<ResultLoading>
+        get() = _progressBarVisibility
 
-    private val listaFilmeUI = MutableLiveData<List<FilmeUI>>()
-    val listaFilmes: MutableLiveData<List<FilmeUI>>
-        get() = listaFilmeUI
+    private val _listaFilmeUI = MutableLiveData<List<FilmeUI>>()
+    val listaFilmes: LiveData<List<FilmeUI>>
+        get() = _listaFilmeUI
 
-    private val detalhesUI = MutableLiveData<DetalhesUI>()
-    val detalhesUIFilme: MutableLiveData<DetalhesUI>
-        get() = detalhesUI
+    private val _detalhesUI = MutableLiveData<DetalhesUI>()
+    val detalhesUI: LiveData<DetalhesUI>
+        get() = _detalhesUI
 
-    private val filmesSimilares = MutableLiveData<List<FilmeUI>>()
-    val listaFilmesSimilares: MutableLiveData<List<FilmeUI>>
-        get() = filmesSimilares
+    private val _similaresUI = MutableLiveData<List<SimilarUI>>()
+    val similaresUI: LiveData<List<SimilarUI>>
+        get() = _similaresUI
 
     fun recuperarFilmesPopulares() {
-        progressBar.value = ResultLoading(visibility = View.VISIBLE)
-
+        _progressBarVisibility.value = ResultLoading(visibility = View.VISIBLE)
         viewModelScope.launch {
-            listaFilmeUI.postValue(
+            _listaFilmeUI.postValue(
                 iFilmeUseCase.recuperarFilmesPopulares()
             )
-            progressBar.value = ResultLoading(visibility = View.GONE)
+            _progressBarVisibility.value = ResultLoading(visibility = View.GONE)
         }
 
     }
 
     fun recuperarFilmesPesquisa(pesquisaDigitada: String) {
         viewModelScope.launch {
-            listaFilmeUI.postValue(
+            _listaFilmeUI.postValue(
                 iFilmeUseCase.recuperarFilmesPesquisa(pesquisaDigitada)
             )
         }
     }
 
     fun recuperarFilmeDetalhes(movie_id: Int) {
+        _progressBarVisibility.value = ResultLoading(visibility = View.VISIBLE)
         viewModelScope.launch {
-            detalhesUI.postValue(
+            _detalhesUI.postValue(
                 iFilmeUseCase.recuperarFilmeDetalhes(movie_id)
             )
+            _progressBarVisibility.value = ResultLoading(visibility = View.GONE)
         }
     }
 
     fun recuperandoListaFilmesSimilares(movie_id: Int) {
+        _progressBarVisibility.value = ResultLoading(visibility = View.VISIBLE)
         viewModelScope.launch {
-            filmesSimilares.postValue(
+            _similaresUI.postValue(
                 iFilmeUseCase.recuperandoListaFilmesSimilares(movie_id)
             )
+            _progressBarVisibility.value = ResultLoading(visibility = View.GONE)
         }
     }
 

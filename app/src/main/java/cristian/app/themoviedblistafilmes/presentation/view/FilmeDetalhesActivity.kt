@@ -1,6 +1,7 @@
 package cristian.app.themoviedblistafilmes.presentation.view
 
 import android.os.Bundle
+import android.window.OnBackInvokedDispatcher
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -31,8 +32,8 @@ class FilmeDetalhesActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.title = "Detalhes Filme"
 
-        inicializarAdapter()
         inicializarBundle()
+        inicializarAdapter()
         inicializarObservables()
     }
 
@@ -47,7 +48,9 @@ class FilmeDetalhesActivity : AppCompatActivity() {
 
         with(binding) {
             rvSimilares.adapter = adapterSimilar
-            rvSimilares.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
+            rvSimilares.layoutManager = LinearLayoutManager(
+                applicationContext, RecyclerView.VERTICAL, false
+            )
             rvSimilares.addItemDecoration(
                 DividerItemDecoration(applicationContext, RecyclerView.VERTICAL)
             )
@@ -55,13 +58,18 @@ class FilmeDetalhesActivity : AppCompatActivity() {
     }
 
     private fun inicializarObservables() {
-        mainViewModel.detalhesUIFilme.observe(this) { detalhesUI ->
+        mainViewModel.detalhesUI.observe(this) { detalhesUI ->
             configuraTelaDetalhes(detalhesUI)
         }
         mainViewModel.recuperarFilmeDetalhes(id!!)
 
-        mainViewModel.listaFilmesSimilares.observe(this) { listaFilmeUI ->
-            adapterSimilar.recuperandoFilmesSimilares(listaFilmeUI)
+        mainViewModel.progressBarVisibility.observe(this) { resultLoading ->
+            binding.progressDetalhes.visibility = resultLoading.visibility
+            adapterSimilar.setVisibilityProgressBar(resultLoading)
+        }
+
+        mainViewModel.similaresUI.observe(this) { listaSimilarUI ->
+            adapterSimilar.recuperandoFilmesSimilares(listaSimilarUI)
         }
         mainViewModel.recuperandoListaFilmesSimilares(id!!)
     }
@@ -82,12 +90,17 @@ class FilmeDetalhesActivity : AppCompatActivity() {
 
             val genero = detalhesUI.generos.map {
                 it.nomeGenero
-            }.first()
+            }
 
-            textGenero.text = "Genres: ${genero.removeSurrounding("[", "]")}"
+            if (genero.isNotEmpty()) {
+                textGenero.text = "Genre: ${genero[0].removeSurrounding("[", "]")}"
+            } else {
+                textGenero.text = "- -"
+            }
+
 
             Picasso.get()
-                .load(Constants.BASE_IMAGE_URL + "w500" + detalhesUI.imagem)
+                .load(Constants.BASE_IMAGE_URL + "w780" + detalhesUI.imagem)
                 .into(imageDetalhes)
         }
     }

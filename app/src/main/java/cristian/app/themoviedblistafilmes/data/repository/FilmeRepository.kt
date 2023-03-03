@@ -1,24 +1,25 @@
 package cristian.app.themoviedblistafilmes.data.repository
 
-import android.util.Log
 import cristian.app.themoviedblistafilmes.data.model.detail.toDetalhes
 import cristian.app.themoviedblistafilmes.data.model.popular.toFilme
+import cristian.app.themoviedblistafilmes.data.model.similar.toSimilar
 import cristian.app.themoviedblistafilmes.data.service.FilmeAPI
 import cristian.app.themoviedblistafilmes.domain.model.Detalhes
 import cristian.app.themoviedblistafilmes.domain.model.Filme
+import cristian.app.themoviedblistafilmes.domain.model.Similar
 import javax.inject.Inject
 
 class FilmeRepository @Inject constructor(
     private val service: FilmeAPI
 ) : IFilmeRepository {
-    //Primeira tela
     override suspend fun recuperarFilmesPopulares(): List<Filme> {
         val response = service.getPopularMovies()
 
         if (response.isSuccessful) {
             response.body()?.let { filmeResponse ->
-                val listaFilmeDTO = filmeResponse.listaFilmes
+                val listaFilmeDTO = filmeResponse.listaFilmeDTO
                 val listaFilme = listaFilmeDTO.map { it.toFilme() }
+
                 return listaFilme
             }
         }
@@ -31,7 +32,7 @@ class FilmeRepository @Inject constructor(
         )
         if (response.isSuccessful) {
             response.body()?.let { filmeResponse ->
-                val listaFilmeDTO = filmeResponse.listaFilmes
+                val listaFilmeDTO = filmeResponse.listaFilmeDTO
                 val listaFilme = listaFilmeDTO.map { it.toFilme() }
                 return listaFilme
             }
@@ -52,16 +53,16 @@ class FilmeRepository @Inject constructor(
         throw Exception("Erro ao recuperar detalhes do filme")
     }
 
-    override suspend fun recuperandoListaFilmesSimilares(movie_id: Int): List<Filme> {
+    override suspend fun recuperandoListaFilmesSimilares(movie_id: Int): List<Similar> {
         val response = service.getSimilarMovies(movie_id)
 
         if (response.isSuccessful) {
-            response.body()?.let { filmeResponse ->
-                val listaFilmeDTO = filmeResponse.listaFilmes
-                val listaFilme = listaFilmeDTO.map {
-                    it.toFilme()
+            response.body()?.let { similarResponse ->
+                val listaSimilarDTO = similarResponse.listaFilmesSimilares
+                val listaSimilares = listaSimilarDTO.map {
+                    it.toSimilar()
                 }
-                return listaFilme
+                return listaSimilares
             }
         }
         return emptyList()

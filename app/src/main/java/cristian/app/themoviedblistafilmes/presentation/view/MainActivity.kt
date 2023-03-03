@@ -9,12 +9,16 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cristian.app.themoviedblistafilmes.adapter.FilmesAdapter
 import cristian.app.themoviedblistafilmes.databinding.ActivityMainBinding
 import cristian.app.themoviedblistafilmes.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -30,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         inicializarAdapter()
+        inicializarListener()
         inicializarObservables()
     }
 
@@ -63,7 +68,6 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.listaFilmes.observe(this) { listaFilmesPesquisa ->
             adapterFilmes.recuperandoFilmes(listaFilmesPesquisa)
         }
-        inicializarListener()
     }
 
     private fun inicializarListener() {
@@ -73,7 +77,8 @@ class MainActivity : AppCompatActivity() {
             if (pesquisaDigitada.isNotEmpty()) {
                 mainViewModel.recuperarFilmesPesquisa(pesquisaDigitada)
                 //Esconder teclado após pesquisa
-                val inputMethodMenager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val inputMethodMenager =
+                    getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodMenager.hideSoftInputFromWindow(it.windowToken, 0)
             } else {
                 Toast.makeText(
@@ -88,7 +93,6 @@ class MainActivity : AppCompatActivity() {
     private fun installSplash() {
         val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition {
-            Thread.sleep(2000L)
             return@setKeepOnScreenCondition false
         }
     }
