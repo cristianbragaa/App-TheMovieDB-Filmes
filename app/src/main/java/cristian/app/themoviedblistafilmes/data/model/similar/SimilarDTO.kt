@@ -5,8 +5,8 @@ import cristian.app.themoviedblistafilmes.domain.model.Similar
 
 data class SimilarDTO(
     @SerializedName("poster_path")
-    val imagem: String,
-    @SerializedName("title")
+    val imagem: String?,
+    @SerializedName("original_title")
     val titulo: String,
     @SerializedName("release_date")
     val dataLancamento: String

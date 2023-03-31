@@ -5,6 +5,7 @@ import android.window.OnBackInvokedDispatcher
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.coroutineScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,9 @@ import cristian.app.themoviedblistafilmes.helper.Constants
 import cristian.app.themoviedblistafilmes.presentation.model.DetalhesUI
 import cristian.app.themoviedblistafilmes.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 
 @AndroidEntryPoint
@@ -22,7 +26,7 @@ class FilmeDetalhesActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityFilmeDetalhesBinding.inflate(layoutInflater) }
     private lateinit var adapterSimilar: FilmesSimilaresAdapter
-    private var id: Int? = null
+    private var movieId: Int? = null
 
     private val mainViewModel: MainViewModel by viewModels()
 
@@ -37,9 +41,15 @@ class FilmeDetalhesActivity : AppCompatActivity() {
         inicializarObservables()
     }
 
+    override fun onStart() {
+        super.onStart()
+        mainViewModel.recuperarFilmeDetalhes(movieId!!)
+        mainViewModel.recuperandoListaFilmesSimilares(movieId!!)
+    }
+
     private fun inicializarBundle() {
         val bundle = intent.extras
-        id = bundle?.getInt("id")
+        movieId = bundle?.getInt("id")
 
     }
 
@@ -58,20 +68,16 @@ class FilmeDetalhesActivity : AppCompatActivity() {
     }
 
     private fun inicializarObservables() {
+        mainViewModel.progressBarVisibility.observe(this) { resultLoading ->
+            adapterSimilar.setVisibilityProgressBar(resultLoading)
+            binding.progressDetalhes.visibility = resultLoading.visibility
+        }
         mainViewModel.detalhesUI.observe(this) { detalhesUI ->
             configuraTelaDetalhes(detalhesUI)
         }
-        mainViewModel.recuperarFilmeDetalhes(id!!)
-
-        mainViewModel.progressBarVisibility.observe(this) { resultLoading ->
-            binding.progressDetalhes.visibility = resultLoading.visibility
-            adapterSimilar.setVisibilityProgressBar(resultLoading)
-        }
-
         mainViewModel.similaresUI.observe(this) { listaSimilarUI ->
             adapterSimilar.recuperandoFilmesSimilares(listaSimilarUI)
         }
-        mainViewModel.recuperandoListaFilmesSimilares(id!!)
     }
 
     private fun configuraTelaDetalhes(detalhesUI: DetalhesUI) {
@@ -95,9 +101,8 @@ class FilmeDetalhesActivity : AppCompatActivity() {
             if (genero.isNotEmpty()) {
                 textGenero.text = "Genre: ${genero[0].removeSurrounding("[", "]")}"
             } else {
-                textGenero.text = "- -"
+                textGenero.text = "Genre: - -"
             }
-
 
             Picasso.get()
                 .load(Constants.BASE_IMAGE_URL + "w780" + detalhesUI.imagem)

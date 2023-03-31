@@ -60,8 +60,7 @@ class FilmesSimilaresAdapter :
             val formatoSaida = SimpleDateFormat("dd/MM/yyyy")
 
             val dataLancamento = similarUI.dataLancamento
-
-            if (dataLancamento != "") {
+            if (dataLancamento.isNotEmpty()) {
                 val dataEntrada = formatoEntrada.parse(dataLancamento)
                 val dataSaida = formatoSaida.format(dataEntrada)
                 textDataSimilar.text = "Release date: $dataSaida"

@@ -7,7 +7,7 @@ import cristian.app.themoviedblistafilmes.domain.model.Similar
 interface IFilmeRepository {
     suspend fun recuperarFilmesPopulares(): List<Filme>
     suspend fun recuperarFilmesPesquisa(pesquisaDigitada: String): List<Filme>
-    suspend fun recuperarFilmeDetalhes(movie_id: Int): Detalhes
-    suspend fun recuperandoListaFilmesSimilares(movie_id: Int): List<Similar>
+    suspend fun recuperarFilmeDetalhes(movieId: Int): Detalhes
+    suspend fun recuperandoListaFilmesSimilares(movieId: Int): List<Similar>
 
 }

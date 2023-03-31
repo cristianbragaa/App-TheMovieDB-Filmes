@@ -11,8 +11,9 @@ import cristian.app.themoviedblistafilmes.presentation.model.DetalhesUI
 import cristian.app.themoviedblistafilmes.presentation.model.FilmeUI
 import cristian.app.themoviedblistafilmes.presentation.model.SimilarUI
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
+import kotlin.coroutines.coroutineContext
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -36,42 +37,32 @@ class MainViewModel @Inject constructor(
         get() = _similaresUI
 
     fun recuperarFilmesPopulares() {
-        _progressBarVisibility.value = ResultLoading(visibility = View.VISIBLE)
         viewModelScope.launch {
-            _listaFilmeUI.postValue(
-                iFilmeUseCase.recuperarFilmesPopulares()
-            )
-            _progressBarVisibility.value = ResultLoading(visibility = View.GONE)
-        }
-
-    }
-
-    fun recuperarFilmesPesquisa(pesquisaDigitada: String) {
-        viewModelScope.launch {
-            _listaFilmeUI.postValue(
-                iFilmeUseCase.recuperarFilmesPesquisa(pesquisaDigitada)
-            )
-        }
-    }
-
-    fun recuperarFilmeDetalhes(movie_id: Int) {
-        _progressBarVisibility.value = ResultLoading(visibility = View.VISIBLE)
-        viewModelScope.launch {
-            _detalhesUI.postValue(
-                iFilmeUseCase.recuperarFilmeDetalhes(movie_id)
-            )
+            _progressBarVisibility.value = ResultLoading(visibility = View.VISIBLE)
+            _listaFilmeUI.postValue(iFilmeUseCase.recuperarFilmesPopulares())
             _progressBarVisibility.value = ResultLoading(visibility = View.GONE)
         }
     }
 
-    fun recuperandoListaFilmesSimilares(movie_id: Int) {
+    fun recuperarFilmesPesquisa(pesquisaDigitada: String) = viewModelScope.launch {
+        _listaFilmeUI.postValue(
+            iFilmeUseCase.recuperarFilmesPesquisa(pesquisaDigitada)
+        )
+    }
+
+    fun recuperarFilmeDetalhes(movieId: Int) = viewModelScope.launch {
         _progressBarVisibility.value = ResultLoading(visibility = View.VISIBLE)
-        viewModelScope.launch {
-            _similaresUI.postValue(
-                iFilmeUseCase.recuperandoListaFilmesSimilares(movie_id)
-            )
-            _progressBarVisibility.value = ResultLoading(visibility = View.GONE)
-        }
+        _detalhesUI.postValue(
+            iFilmeUseCase.recuperarFilmeDetalhes(movieId)
+        )
+        _progressBarVisibility.value = ResultLoading(visibility = View.GONE)
+
+    }
+
+    fun recuperandoListaFilmesSimilares(movieId: Int) = viewModelScope.launch {
+        _progressBarVisibility.value = ResultLoading(visibility = View.VISIBLE)
+        _similaresUI.postValue(iFilmeUseCase.recuperandoListaFilmesSimilares(movieId))
+        _progressBarVisibility.value = ResultLoading(visibility = View.GONE)
     }
 
 }

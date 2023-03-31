@@ -3,7 +3,6 @@ package cristian.app.themoviedblistafilmes.data.service
 import okhttp3.OkHttpClient
 
 class OkhttpClientInterceptor {
-
     companion object {
         fun getInstance(): OkHttpClient {
             return OkHttpClient.Builder()
@@ -11,5 +10,4 @@ class OkhttpClientInterceptor {
                 .build()
         }
     }
-
 }

@@ -9,7 +9,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface FilmeAPI {
-
     @GET("movie/popular")
     suspend fun getPopularMovies(): Response<FilmeResponse>
 
@@ -20,12 +19,11 @@ interface FilmeAPI {
 
     @GET("movie/{movie_id}")
     suspend fun getDetailsMovies(
-        @Path("movie_id") movie_id: Int
+        @Path("movie_id") movieId: Int
     ): Response<DetalhesDTO>
 
     @GET("movie/{movie_id}/similar")
     suspend fun getSimilarMovies(
         @Path("movie_id") movie_id: Int
     ): Response<SimilarResponse>
-
 }

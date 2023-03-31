@@ -4,21 +4,16 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cristian.app.themoviedblistafilmes.adapter.FilmesAdapter
 import cristian.app.themoviedblistafilmes.databinding.ActivityMainBinding
 import cristian.app.themoviedblistafilmes.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -31,11 +26,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         installSplash()
         setContentView(binding.root)
-        supportActionBar?.hide()
+        supportActionBar?.title = "Filmes Populares"
 
         inicializarAdapter()
         inicializarListener()
         inicializarObservables()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mainViewModel.recuperarFilmesPopulares()
     }
 
     private fun inicializarAdapter() {
@@ -57,7 +57,6 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.listaFilmes.observe(this) { listaFilmesPopulares ->
             adapterFilmes.recuperandoFilmes(listaFilmesPopulares)
         }
-        mainViewModel.recuperarFilmesPopulares()
 
         // Configura ProgressBar
         mainViewModel.progressBarVisibility.observe(this) { resultLoading ->

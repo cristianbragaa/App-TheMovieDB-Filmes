@@ -19,7 +19,6 @@ data class DetalhesDTO(
     @SerializedName("vote_count")
     val qtdVotos: Int
 )
-
 fun DetalhesDTO.toDetalhes() : Detalhes {
     return Detalhes(
         imagem = this.imagem,

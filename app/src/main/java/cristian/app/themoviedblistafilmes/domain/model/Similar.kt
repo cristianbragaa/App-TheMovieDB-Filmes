@@ -6,8 +6,8 @@ import cristian.app.themoviedblistafilmes.presentation.model.SimilarUI
 
 data class Similar(
     @SerializedName("poster_path")
-    val imagem: String,
-    @SerializedName("title")
+    val imagem: String?,
+    @SerializedName("original_title")
     val titulo: String,
     @SerializedName("release_date")
     val dataLancamento: String

@@ -1,25 +1,24 @@
 package cristian.app.themoviedblistafilmes.domain.usecase
 
 import cristian.app.themoviedblistafilmes.data.repository.IFilmeRepository
-import cristian.app.themoviedblistafilmes.domain.model.Filme
-import cristian.app.themoviedblistafilmes.domain.model.toDetalhesUI
-import cristian.app.themoviedblistafilmes.domain.model.toFilmeUI
-import cristian.app.themoviedblistafilmes.domain.model.toSimilarUI
+import cristian.app.themoviedblistafilmes.domain.model.*
 import cristian.app.themoviedblistafilmes.presentation.model.DetalhesUI
 import cristian.app.themoviedblistafilmes.presentation.model.FilmeUI
 import cristian.app.themoviedblistafilmes.presentation.model.SimilarUI
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import javax.inject.Inject
 
 class FilmeUseCase @Inject constructor(
     private val iFilmeRepository: IFilmeRepository
 ) : IFilmeUseCase {
 
-    //Primeira tela
     override suspend fun recuperarFilmesPopulares(): List<FilmeUI> {
         return try {
-            val listaFilme = iFilmeRepository.recuperarFilmesPopulares()
+            val filmes = iFilmeRepository.recuperarFilmesPopulares()
 
-            val listaFilmeUI = listaFilme.map { it.toFilmeUI() }
+            val listaFilmeUI = filmes.map { it.toFilmeUI() }
             return listaFilmeUI
         } catch (e: Exception) {
             e.printStackTrace()
@@ -29,15 +28,15 @@ class FilmeUseCase @Inject constructor(
 
     override suspend fun recuperarFilmesPesquisa(pesquisaDigitada: String): List<FilmeUI> {
         return try {
-            val listaFilme = iFilmeRepository.recuperarFilmesPesquisa(pesquisaDigitada)
+            val filmes = iFilmeRepository.recuperarFilmesPesquisa(pesquisaDigitada)
 
-            val listaImagensNaoNulas = mutableListOf<Filme>()
-            listaFilme.forEach { filme ->
+            val listaFilmePesquisa = mutableListOf<Filme>()
+            filmes.forEach { filme ->
                 if (filme.imagem != null) {
-                    listaImagensNaoNulas.add(filme)
+                    listaFilmePesquisa.add(filme)
                 }
             }
-            val listaFilmeUI = listaImagensNaoNulas.map { it.toFilmeUI() }
+            val listaFilmeUI = listaFilmePesquisa.map { it.toFilmeUI() }
             listaFilmeUI
         } catch (e: Exception) {
             e.printStackTrace()
@@ -45,10 +44,9 @@ class FilmeUseCase @Inject constructor(
         }
     }
 
-    //Segunda tela
-    override suspend fun recuperarFilmeDetalhes(movie_id: Int): DetalhesUI {
+    override suspend fun recuperarFilmeDetalhes(movieId: Int): DetalhesUI {
         try {
-            val detalhes = iFilmeRepository.recuperarFilmeDetalhes(movie_id)
+            val detalhes = iFilmeRepository.recuperarFilmeDetalhes(movieId)
 
             val detalhesUI = detalhes.toDetalhesUI()
             return detalhesUI
@@ -58,19 +56,17 @@ class FilmeUseCase @Inject constructor(
         }
     }
 
-    override suspend fun recuperandoListaFilmesSimilares(movie_id: Int): List<SimilarUI> {
+    override suspend fun recuperandoListaFilmesSimilares(movieId: Int): List<SimilarUI> {
         return try {
-            val listaFilme = iFilmeRepository.recuperandoListaFilmesSimilares(movie_id)
+            val similar = iFilmeRepository.recuperandoListaFilmesSimilares(movieId)
 
-            /*val listaImagensNaoNulas = mutableListOf<Filme>()
-            listaFilme.forEach {
-                if (it.imagem != null) {
-                    listaImagensNaoNulas.add(it)
+            val listaFilmeSimilar = mutableListOf<Similar>()
+            similar.forEach { similar ->
+                if (similar.imagem != null && similar.imagem != "") {
+                    listaFilmeSimilar.add(similar)
                 }
-            }*/
-            val listaSimilares = listaFilme.map {
-                it.toSimilarUI()
             }
+            val listaSimilares = listaFilmeSimilar.map { it.toSimilarUI() }
             listaSimilares
         } catch (e: Exception) {
             e.printStackTrace()

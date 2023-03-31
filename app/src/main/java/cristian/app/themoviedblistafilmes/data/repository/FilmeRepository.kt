@@ -41,8 +41,8 @@ class FilmeRepository @Inject constructor(
     }
 
     //Segunda tela
-    override suspend fun recuperarFilmeDetalhes(movie_id: Int): Detalhes {
-        val response = service.getDetailsMovies(movie_id)
+    override suspend fun recuperarFilmeDetalhes(movieId: Int): Detalhes {
+        val response = service.getDetailsMovies(movieId)
 
         if (response.isSuccessful) {
             response.body()?.let { detalhesDTO ->
@@ -53,8 +53,8 @@ class FilmeRepository @Inject constructor(
         throw Exception("Erro ao recuperar detalhes do filme")
     }
 
-    override suspend fun recuperandoListaFilmesSimilares(movie_id: Int): List<Similar> {
-        val response = service.getSimilarMovies(movie_id)
+    override suspend fun recuperandoListaFilmesSimilares(movieId: Int): List<Similar> {
+        val response = service.getSimilarMovies(movieId)
 
         if (response.isSuccessful) {
             response.body()?.let { similarResponse ->

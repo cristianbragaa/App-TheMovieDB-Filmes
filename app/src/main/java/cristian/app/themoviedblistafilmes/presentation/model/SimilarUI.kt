@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class SimilarUI(
     @SerializedName("poster_path")
-    val imagem: String,
-    @SerializedName("title")
-    val titulo: String,
+    var imagem: String?,
+    @SerializedName("original_title")
+    var titulo: String,
     @SerializedName("release_date")
-    val dataLancamento: String
+    var dataLancamento: String
 )
