@@ -16,6 +16,8 @@
  
  Com isso pude separar o app em camadas de responsabilidades únicas e próprias, fazendo com que cada camada não dependa uma da outra diretamente e também não conheça seus dados, tornando o app mais escalável, com baixo acoplamento entre as camadas e de fácil manutenção, e mais testável também. 
  
+ # Api utilizada -> https://developers.themoviedb.org/3/getting-started/introduction
+ 
  
  
 
