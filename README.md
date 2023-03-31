@@ -18,6 +18,9 @@
  
  # Api utilizada -> https://developers.themoviedb.org/3/getting-started/introduction
  
+ ![telaPopulares](https://user-images.githubusercontent.com/77281161/229186294-f3201eb2-bdd9-43e2-b71b-9878b7e1427a.png)
+![telaDetalhes](https://user-images.githubusercontent.com/77281161/229186298-c498187a-1d15-4aec-9636-685d4f77959d.png)
+ 
  
  
 
