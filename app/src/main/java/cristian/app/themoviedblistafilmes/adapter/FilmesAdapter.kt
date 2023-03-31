@@ -1,23 +1,29 @@
 package cristian.app.themoviedblistafilmes.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import cristian.app.themoviedblistafilmes.R
+import cristian.app.themoviedblistafilmes.helper.Constants
 import cristian.app.themoviedblistafilmes.databinding.ItemFilmeBinding
-import cristian.app.themoviedblistafilmes.model.genres.Genero
-import cristian.app.themoviedblistafilmes.model.popular.Filme
-import cristian.app.themoviedblistafilmes.retrofit.RetrofitInstance
+import cristian.app.themoviedblistafilmes.helper.ResultLoading
+import cristian.app.themoviedblistafilmes.presentation.model.FilmeUI
 
 class FilmesAdapter(
-    private val onClickFilme: (filme: Filme) -> Unit
+    private val onClickFilme: (FilmeUI) -> Unit
 ) : RecyclerView.Adapter<FilmesAdapter.FilmesViewHolder>() {
 
-    private var listaFilmes = mutableListOf<Filme>()
-
-    fun recuperandoFilmesPopulares(filmes: List<Filme>){
-        this.listaFilmes = filmes.toMutableList()
+    private var listaFilmes = emptyList<FilmeUI>()
+    private lateinit var resultLoading: ResultLoading
+    fun recuperandoFilmes(filmes: List<FilmeUI>) {
+        this.listaFilmes = filmes
         notifyDataSetChanged()
+    }
+    fun setVisibilityProgressBar(resultLoading: ResultLoading) {
+        this.resultLoading = resultLoading
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmesViewHolder {
@@ -30,23 +36,29 @@ class FilmesAdapter(
     }
 
     override fun onBindViewHolder(holder: FilmesViewHolder, position: Int) {
-        holder.bind(listaFilmes[position], onClickFilme)
+        val filmeUI = listaFilmes[position]
+        holder.bind(filmeUI, onClickFilme)
     }
 
-    override fun getItemCount(): Int {
-        return listaFilmes.size
-    }
+    override fun getItemCount() = listaFilmes.count()
 
-    inner class FilmesViewHolder(private val binding: ItemFilmeBinding): RecyclerView.ViewHolder(binding.root){
+    inner class FilmesViewHolder(private val binding: ItemFilmeBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(filme: Filme, onClickFilme: (filme: Filme) -> Unit){
-            binding.textTituloPopular.text = filme.titulo
+        private val titulo = binding.textTituloPopular
+        private val imagem = binding.imageFilmePopular
+        private val progressBar = binding.progressItemRV
+
+        fun bind(filmeUI: FilmeUI, onClickFilme: (filme: FilmeUI) -> Unit) {
+            progressBar.visibility = resultLoading.visibility
+
+            titulo.text = filmeUI.titulo
             Picasso.get()
-                .load(RetrofitInstance.BASE_IMAGE_URL + "w500" + filme.imagem)
-                .into(binding.imageFilmePopular)
+                .load(Constants.BASE_IMAGE_URL + "w500" + filmeUI.imagem)
+                .into(imagem)
 
             itemView.setOnClickListener {
-                onClickFilme(filme)
+                onClickFilme(filmeUI)
             }
         }
     }

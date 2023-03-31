@@ -2,5 +2,5 @@
     <string name="app_name">App Lista Filmes API</string>
     <string name="lista_populares">Lista de filmes populares</string>
     <string name="texto_campo_pesquisa">Pesquisar</string>
-    <string name="texto_pesquisa_hint">Pesquisar filme</string>
+    <string name="texto_pesquisa_hint">Pesquisa</string>
 </resources>
